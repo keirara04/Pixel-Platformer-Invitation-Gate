@@ -1,65 +1,95 @@
-import Image from "next/image";
+import CountdownTimer from "@/components/CountdownTimer";
+import PhotoGallery from "@/components/PhotoGallery";
+import MusicToggle from "@/components/MusicToggle";
+import PixelCard from "@/components/PixelCard";
+
+// Placeholder invite details — swap these for the real party info.
+const GUEST_OF_HONOR = "Alex";
+const AGE_TURNING = 10;
+const PARTY_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+const PARTY_DATE_ISO = PARTY_DATE.toISOString();
+const PARTY_DATE_LABEL = PARTY_DATE.toLocaleDateString("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+const PARTY_TIME_LABEL = "3:00 PM";
+const PARTY_LOCATION = "123 Party Lane, Funtown";
+
+const SPRITES = [
+  { emoji: "🎈", className: "top-10 left-6 text-4xl animate-float-slow" },
+  { emoji: "🎉", className: "top-24 right-8 text-4xl animate-float-slower" },
+  { emoji: "⭐", className: "top-4 right-1/3 text-2xl animate-twinkle" },
+  { emoji: "🎁", className: "bottom-24 left-10 text-4xl animate-float-slower" },
+  { emoji: "✨", className: "bottom-40 right-12 text-2xl animate-twinkle" },
+  { emoji: "🧁", className: "top-1/2 left-4 text-3xl animate-float-slow" },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="relative flex-1 overflow-hidden px-4 py-12 sm:py-16">
+      {SPRITES.map((sprite, i) => (
+        <span
+          key={i}
+          aria-hidden
+          className={`pointer-events-none absolute select-none ${sprite.className}`}
+        >
+          {sprite.emoji}
+        </span>
+      ))}
+
+      <div className="relative mx-auto flex max-w-xl flex-col items-center gap-10 text-center">
+        {/* Hero */}
+        <section className="flex flex-col items-center gap-4">
+          <p className="font-pixel text-xs sm:text-sm text-pixel-ink-soft">
+            ✦ You&apos;re Invited ✦
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          <h1 className="font-pixel text-2xl sm:text-4xl leading-relaxed text-pixel-ink">
+            {GUEST_OF_HONOR}&apos;s
+            <br />
+            {AGE_TURNING}th Birthday!
+          </h1>
+        </section>
+
+        {/* Event details */}
+        <PixelCard bg="peach" className="w-full">
+          <div className="flex flex-col gap-2 font-body text-sm sm:text-base">
+            <p>
+              <span className="font-pixel text-[10px] block mb-1 text-pixel-ink-soft">
+                DATE
+              </span>
+              {PARTY_DATE_LABEL}
+            </p>
+            <p>
+              <span className="font-pixel text-[10px] block mb-1 text-pixel-ink-soft">
+                TIME
+              </span>
+              {PARTY_TIME_LABEL}
+            </p>
+            <p>
+              <span className="font-pixel text-[10px] block mb-1 text-pixel-ink-soft">
+                LOCATION
+              </span>
+              {PARTY_LOCATION}
+            </p>
+          </div>
+        </PixelCard>
+
+        {/* Countdown */}
+        <section className="w-full flex flex-col items-center gap-3">
+          <h2 className="font-pixel text-sm sm:text-base">Countdown to the Party</h2>
+          <CountdownTimer targetDate={PARTY_DATE_ISO} />
+        </section>
+
+        {/* Gallery */}
+        <section className="w-full flex flex-col items-center gap-3">
+          <h2 className="font-pixel text-sm sm:text-base">Photo Gallery</h2>
+          <PhotoGallery />
+        </section>
+      </div>
+
+      <MusicToggle />
+    </main>
   );
 }

@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI tooling (Claude Code plugin config, generated specs/plans)
+/.claude/
+/docs/superpowers/

@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pixel Birthday Invitation
+
+A single-page birthday party invitation with a pastel pixel-art theme — countdown timer, photo gallery, and background music toggle. Built with Next.js (App Router) and Tailwind CSS.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Customizing the invite
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All party details currently use placeholders. To personalize:
 
-## Learn More
+- **Name, age, date, time, location** — edit the constants at the top of [app/page.tsx](app/page.tsx) (`GUEST_OF_HONOR`, `AGE_TURNING`, `PARTY_DATE`, `PARTY_TIME_LABEL`, `PARTY_LOCATION`).
+- **Photos** — [components/PhotoGallery.tsx](components/PhotoGallery.tsx) currently renders colored placeholder tiles with emoji. Replace the `PLACEHOLDER_TILES` array with real images (drop files in `public/images/` and swap the emoji `<div>` for an `<img>`/`next/image`).
+- **Background music** — drop a royalty-free chiptune/8-bit MP3 at `public/audio/theme.mp3`. See `public/audio/README.md`. The mute/play button in the bottom-right corner ([components/MusicToggle.tsx](components/MusicToggle.tsx)) will pick it up automatically.
 
-To learn more about Next.js, take a look at the following resources:
+## Theme
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The pastel pixel look lives in [app/globals.css](app/globals.css):
+- Color palette: pink, mint, lavender, butter, peach, plus a plum ink color for text/borders.
+- `.pixel-border` / `.pixel-border-sm` / `.pixel-btn` utility classes give the stepped/blocky pixel-art border look via stacked `box-shadow`s.
+- `Press Start 2P` (pixel font, headings) and `Nunito` (body text) are loaded via `next/font` in [app/layout.tsx](app/layout.tsx).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Verifying changes
 
-## Deploy on Vercel
+```bash
+npm run build   # production build — catches type/lint errors
+npm run dev     # manual check in the browser
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploying
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project deploys cleanly to [Vercel](https://vercel.com/new). Connect the repo (or run `vercel deploy` from the CLI) — no environment variables are required.
