@@ -14,7 +14,13 @@ const BG_COLOR_HEX: Record<string, [number, number, number]> = {
   "bg-pixel-peach": [255, 224, 194],
 };
 
-export default function PixelGame({ onWin }: { onWin: () => void }) {
+export default function PixelGame({
+  onWin,
+  characterSrc,
+}: {
+  onWin: () => void;
+  characterSrc: string;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
       MEMORY_PHOTOS.forEach((photo) => {
         k.loadSprite(`photo-${photo.id}`, photo.src);
       });
-      k.loadSprite("player", "/images/character.png");
+      k.loadSprite("player", characterSrc);
 
       LEVELS.forEach((level, index) => {
         k.scene(`level${index}`, () => {
@@ -144,7 +150,7 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
       destroyed = true;
       kaplayInstance?.quit();
     };
-  }, [onWin]);
+  }, [onWin, characterSrc]);
 
   return (
     <div className="fixed inset-0 flex flex-col bg-pixel-ink overflow-hidden">

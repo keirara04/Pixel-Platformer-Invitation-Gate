@@ -15,6 +15,9 @@ page.on("pageerror", (e) => errors.push(String(e)));
 
 await page.evaluate(() => localStorage.removeItem("pixel-invite-game-completed")).catch(() => {});
 await page.goto("http://localhost:3000", { waitUntil: "networkidle" });
+await page.waitForSelector("text=SELECT YOUR CHARACTER");
+await page.getByLabel("Select Nurin").click();
+await page.getByText("Start").click();
 await page.waitForSelector("canvas");
 await page.click("canvas");
 
