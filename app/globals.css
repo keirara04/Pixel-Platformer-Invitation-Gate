@@ -9,6 +9,10 @@
   --color-pixel-bg: #fffaf5;
   --color-pixel-ink: #4a3b52;
   --color-pixel-ink-soft: #7a6b82;
+  /* HUD accent — a saturated coral-pink used sparingly for the "achievement
+     unlocked" signature treatment (bracket corners, glowing readouts),
+     never as a fill color, so it reads as a highlight against the pastels. */
+  --color-pixel-accent: #ff5d8f;
 }
 
 @theme inline {
@@ -20,8 +24,10 @@
   --color-pixel-bg: var(--color-pixel-bg);
   --color-pixel-ink: var(--color-pixel-ink);
   --color-pixel-ink-soft: var(--color-pixel-ink-soft);
+  --color-pixel-accent: var(--color-pixel-accent);
   --font-pixel: var(--font-pixel);
   --font-body: var(--font-body);
+  --font-hud: var(--font-hud);
 }
 
 body {
@@ -84,4 +90,53 @@ body {
 
 .animate-twinkle {
   animation: twinkle 2.4s ease-in-out infinite;
+}
+
+/* HUD bracket panel — a viewfinder-style frame (accent corner brackets over
+   a solid ink border) used for the invite's "achievement unlocked" framing.
+   This is the page's one signature device; kept out of every other panel. */
+.hud-panel {
+  position: relative;
+  border: 3px solid var(--color-pixel-ink);
+}
+
+.hud-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: var(--color-pixel-accent);
+  border-style: solid;
+}
+
+.hud-corner-tl {
+  top: -4px;
+  left: -4px;
+  border-width: 4px 0 0 4px;
+}
+
+.hud-corner-tr {
+  top: -4px;
+  right: -4px;
+  border-width: 4px 4px 0 0;
+}
+
+.hud-corner-bl {
+  bottom: -4px;
+  left: -4px;
+  border-width: 0 0 4px 4px;
+}
+
+.hud-corner-br {
+  bottom: -4px;
+  right: -4px;
+  border-width: 0 4px 4px 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s steps(1) infinite;
 }

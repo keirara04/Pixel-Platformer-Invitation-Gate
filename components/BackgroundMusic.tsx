@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import SpeakerIcon from "@/components/icons/SpeakerIcon";
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -52,10 +53,10 @@ export default function BackgroundMusic() {
       <audio ref={audioRef} src="/audio/theme.mp3" loop preload="auto" />
       <button
         onClick={toggle}
-        className="pixel-btn bg-pixel-lavender fixed bottom-5 right-5 z-50 w-12 h-12 flex items-center justify-center text-xl cursor-pointer"
+        className="pixel-btn bg-pixel-lavender fixed bottom-5 right-5 z-50 w-12 h-12 flex items-center justify-center text-pixel-ink cursor-pointer"
         aria-label={playing ? "Mute music" : "Play music"}
       >
-        {playing ? "🔊" : "🔇"}
+        <SpeakerIcon muted={!playing} size={22} />
       </button>
     </>
   );

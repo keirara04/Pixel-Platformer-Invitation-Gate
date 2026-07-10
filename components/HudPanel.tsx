@@ -9,7 +9,7 @@ const bgClasses = {
   white: "bg-white",
 } as const;
 
-export default function PixelCard({
+export default function HudPanel({
   children,
   bg = "white",
   className = "",
@@ -19,7 +19,11 @@ export default function PixelCard({
   className?: string;
 }) {
   return (
-    <div className={`pixel-border ${bgClasses[bg]} p-5 ${className}`}>
+    <div className={`hud-panel ${bgClasses[bg]} p-5 ${className}`}>
+      <span className="hud-corner hud-corner-tl" />
+      <span className="hud-corner hud-corner-tr" />
+      <span className="hud-corner hud-corner-bl" />
+      <span className="hud-corner hud-corner-br" />
       {children}
     </div>
   );

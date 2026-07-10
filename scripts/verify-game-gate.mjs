@@ -12,7 +12,7 @@ const page = await browser.newPage({ viewport: { width: 600, height: 500 } });
 // Fresh visit (no localStorage) shows the game, not the invite.
 await page.goto("http://localhost:3000", { waitUntil: "networkidle" });
 await page.waitForSelector("canvas");
-const inviteVisibleBeforeWin = await page.locator("text=You're Invited").count();
+const inviteVisibleBeforeWin = await page.locator("text=ACHIEVEMENT UNLOCKED").count();
 if (inviteVisibleBeforeWin !== 0) {
   throw new Error("Invite content should not be visible before the game is won");
 }
@@ -21,14 +21,14 @@ if (inviteVisibleBeforeWin !== 0) {
 // contract PixelGame's onWin uses) and reload — invite should show immediately.
 await page.evaluate(() => localStorage.setItem("pixel-invite-game-completed", "true"));
 await page.reload({ waitUntil: "networkidle" });
-await page.waitForSelector("text=You're Invited");
+await page.waitForSelector("text=ACHIEVEMENT UNLOCKED");
 const gameVisibleAfterCompletion = await page.locator("canvas").count();
 if (gameVisibleAfterCompletion !== 0) {
   throw new Error("Game canvas should not render once completion flag is set");
 }
 
 // Replay link clears the flag and shows the game again.
-await page.getByText("replay game").click();
+await page.getByText("Replay Level 1").click();
 await page.waitForSelector("canvas");
 const flagAfterReplay = await page.evaluate(() =>
   localStorage.getItem("pixel-invite-game-completed")

@@ -36,12 +36,16 @@ export default function CountdownTimer({ targetDate }: { targetDate: string }) {
       {units.map((unit) => (
         <div
           key={unit.label}
-          className="pixel-border-sm bg-pixel-butter flex flex-col items-center justify-center py-3 sm:py-4"
+          className="hud-panel bg-pixel-ink flex flex-col items-center justify-center py-3 sm:py-4"
         >
-          <span className="font-pixel text-xl sm:text-3xl text-pixel-ink">
+          <span className="hud-corner hud-corner-tl" />
+          <span className="hud-corner hud-corner-tr" />
+          <span className="hud-corner hud-corner-bl" />
+          <span className="hud-corner hud-corner-br" />
+          <span className="font-hud text-3xl sm:text-5xl leading-none text-pixel-accent">
             {unit.value !== undefined ? String(unit.value).padStart(2, "0") : "--"}
           </span>
-          <span className="font-body text-[10px] sm:text-xs uppercase tracking-wider text-pixel-ink-soft mt-1">
+          <span className="font-body text-[10px] sm:text-xs uppercase tracking-wider text-pixel-bg mt-1">
             {unit.label}
           </span>
         </div>

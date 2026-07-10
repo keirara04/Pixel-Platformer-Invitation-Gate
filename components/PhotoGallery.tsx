@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MEMORY_PHOTOS } from "@/components/photos";
+import CloseIcon from "@/components/icons/CloseIcon";
 
 export default function PhotoGallery() {
   const [openId, setOpenId] = useState<number | null>(null);
@@ -48,9 +49,9 @@ export default function PhotoGallery() {
           <button
             onClick={() => setOpenId(null)}
             aria-label="Close photo"
-            className="pixel-btn bg-pixel-butter fixed top-5 right-5 w-10 h-10 flex items-center justify-center text-lg cursor-pointer"
+            className="pixel-btn bg-pixel-butter fixed top-5 right-5 w-10 h-10 flex items-center justify-center text-pixel-ink cursor-pointer"
           >
-            ✕
+            <CloseIcon size={16} />
           </button>
         </div>
       )}

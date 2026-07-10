@@ -1,6 +1,6 @@
 # Pixel Birthday Invitation
 
-A single-page birthday party invitation with a pastel pixel-art theme — countdown timer, photo gallery, and background music toggle. Built with Next.js (App Router) and Tailwind CSS.
+A single-page birthday party invitation styled like a retro game's "achievement unlocked" screen — HUD-bracket panels, an arcade-style countdown, a photo gallery framed as collected memories, and looping background music. Built with Next.js (App Router) and Tailwind CSS.
 
 ## Getting Started
 
@@ -16,16 +16,17 @@ Open [http://localhost:3000](http://localhost:3000) to view it.
 All party details currently use placeholders. To personalize:
 
 - **Name, age, date, time, location** — edit the constants at the top of [components/InviteContent.tsx](components/InviteContent.tsx) (`GUEST_OF_HONOR`, `AGE_TURNING`, `PARTY_DATE`, `PARTY_TIME_LABEL`, `PARTY_LOCATION`).
-- **Photos** — The `MEMORY_PHOTOS` array in [components/photos.ts](components/photos.ts) currently contains emoji placeholders. Replace the emoji with real image paths (drop files in `public/images/` and update [components/PhotoGallery.tsx](components/PhotoGallery.tsx) to swap the emoji `<div>` for an `<img>`/`next/image`).
-- **Background music** — drop a royalty-free chiptune/8-bit MP3 at `public/audio/theme.mp3`. See `public/audio/README.md`. The mute/play button in the bottom-right corner ([components/MusicToggle.tsx](components/MusicToggle.tsx)) will pick it up automatically.
+- **Photos** — The `MEMORY_PHOTOS` array in [components/photos.ts](components/photos.ts) points at 6 files in `public/images/` (`photo-1.jpg` … `photo-6.jpg`). Swap those files for your own; they're gitignored so personal photos never get committed. See `public/images/README.md`.
+- **Background music** — drop a royalty-free chiptune/8-bit MP3 at `public/audio/theme.mp3`. See `public/audio/README.md`. Playback starts automatically as soon as the page loads (with a fallback to the first key/click if the browser blocks autoplay) via [components/BackgroundMusic.tsx](components/BackgroundMusic.tsx), and loops continuously through both the game and the invite. The speaker icon in the bottom-right corner mutes/unmutes it.
 - **Game gate** — the site requires visitors to complete the pixel platformer game before viewing the invitation. The game's collectibles are pulled from `components/photos.ts` (the same photo source as the gallery), so customizing the photos automatically updates the game collectibles.
 
 ## Theme
 
 The pastel pixel look lives in [app/globals.css](app/globals.css):
-- Color palette: pink, mint, lavender, butter, peach, plus a plum ink color for text/borders.
-- `.pixel-border` / `.pixel-border-sm` / `.pixel-btn` utility classes give the stepped/blocky pixel-art border look via stacked `box-shadow`s.
-- `Press Start 2P` (pixel font, headings) and `Nunito` (body text) are loaded via `next/font` in [app/layout.tsx](app/layout.tsx).
+- Color palette: pink, mint, lavender, butter, peach, plum ink (text/borders), and a coral-pink accent reserved for the HUD signature elements.
+- `.pixel-border` / `.pixel-border-sm` / `.pixel-btn` utility classes give the stepped/blocky pixel-art border look via stacked `box-shadow`s. `.hud-panel` + `.hud-corner-*` add the bracket-cornered "viewfinder" frame used by [components/HudPanel.tsx](components/HudPanel.tsx) and the countdown tiles.
+- Three fonts loaded via `next/font` in [app/layout.tsx](app/layout.tsx): `Press Start 2P` (blocky display headline, used sparingly), `VT323` (arcade-scoreboard digits for the countdown/HUD readouts), and `Nunito` (body text).
+- All decorative icons (balloons, stars, sparks, speaker, replay, close) are hand-drawn pixel-grid SVGs in [components/icons/](components/icons/) rather than emoji, so they render identically everywhere.
 
 ## Verifying changes
 

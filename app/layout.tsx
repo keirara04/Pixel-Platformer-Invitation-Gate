@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Press_Start_2P, Nunito } from "next/font/google";
+import { Press_Start_2P, Nunito, VT323 } from "next/font/google";
 import "./globals.css";
 
 const pixelFont = Press_Start_2P({
@@ -13,8 +13,14 @@ const bodyFont = Nunito({
   subsets: ["latin"],
 });
 
+const hudFont = VT323({
+  variable: "--font-hud",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "You're Invited! 🎂",
+  title: "You're Invited",
   description: "A pixel-perfect birthday party invitation.",
 };
 
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${pixelFont.variable} ${bodyFont.variable} h-full antialiased`}
+      className={`${pixelFont.variable} ${bodyFont.variable} ${hudFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -45,7 +45,7 @@ for (let i = 0; i < 12; i++) {
 await page.keyboard.up("ArrowRight");
 await page.waitForTimeout(500);
 
-const invited = await page.locator("text=You're Invited").count();
+const invited = await page.locator("text=ACHIEVEMENT UNLOCKED").count();
 const flag = await page.evaluate(() => localStorage.getItem("pixel-invite-game-completed"));
 
 if (errors.length > 0) {

@@ -2,7 +2,9 @@
 
 import CountdownTimer from "@/components/CountdownTimer";
 import PhotoGallery from "@/components/PhotoGallery";
-import PixelCard from "@/components/PixelCard";
+import HudPanel from "@/components/HudPanel";
+import PixelSprite from "@/components/icons/PixelSprite";
+import ReplayIcon from "@/components/icons/ReplayIcon";
 import { setGameCompleted } from "@/lib/gameProgress";
 
 // Placeholder invite details — swap these for the real party info.
@@ -17,43 +19,52 @@ const PARTY_DATE_LABEL = PARTY_DATE.toLocaleDateString("en-US", {
   year: "numeric",
 });
 const PARTY_TIME_LABEL = "11:00 AM";
-const PARTY_LOCATION = "123 Party Lane, Funtown";
+const PARTY_LOCATION = "MRT Bandar Tun Hussein Onn (SBK29) Station, Cheras, Kuala Lumpur, Malaysia";
 
-const SPRITES = [
-  { emoji: "🎈", className: "top-10 left-6 text-4xl animate-float-slow" },
-  { emoji: "🎉", className: "top-24 right-8 text-4xl animate-float-slower" },
-  { emoji: "⭐", className: "top-4 right-1/3 text-2xl animate-twinkle" },
-  { emoji: "🎁", className: "bottom-24 left-10 text-4xl animate-float-slower" },
-  { emoji: "✨", className: "bottom-40 right-12 text-2xl animate-twinkle" },
-  { emoji: "🧁", className: "top-1/2 left-4 text-3xl animate-float-slow" },
+function ordinal(n: number): string {
+  const suffixes = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return `${n}${suffixes[(v - 20) % 10] ?? suffixes[v] ?? suffixes[0]}`;
+}
+
+const SPRITES: Array<{
+  kind: "balloon" | "star" | "spark";
+  color: string;
+  className: string;
+}> = [
+  { kind: "balloon", color: "#ff5d8f", className: "-top-4 left-0 animate-float-slow" },
+  { kind: "star", color: "#e0d6ff", className: "-top-4 right-0 animate-float-slower" },
+  { kind: "spark", color: "#fff3c4", className: "-top-8 right-1/3 animate-twinkle" },
 ];
 
 export default function InviteContent({ onReplay }: { onReplay: () => void }) {
   return (
     <main className="relative flex-1 overflow-hidden px-4 py-12 sm:py-16">
-      {SPRITES.map((sprite, i) => (
-        <span
-          key={i}
-          aria-hidden
-          className={`pointer-events-none absolute select-none ${sprite.className}`}
-        >
-          {sprite.emoji}
-        </span>
-      ))}
-
       <div className="relative mx-auto flex max-w-xl flex-col items-center gap-10 text-center">
-        <section className="flex flex-col items-center gap-4">
-          <p className="font-pixel text-xs sm:text-sm text-pixel-ink-soft">
-            ✦ You&apos;re Invited ✦
+        <section className="relative w-full flex flex-col items-center gap-4 pt-2">
+          {SPRITES.map((sprite, i) => (
+            <span
+              key={i}
+              className={`pointer-events-none absolute select-none ${sprite.className}`}
+            >
+              <PixelSprite kind={sprite.kind} color={sprite.color} size={28} />
+            </span>
+          ))}
+          <p className="font-hud text-lg sm:text-xl tracking-[0.3em] text-pixel-accent">
+            &gt;&gt; ACHIEVEMENT UNLOCKED
+            <span className="animate-blink">_</span>
           </p>
           <h1 className="font-pixel text-2xl sm:text-4xl leading-relaxed text-pixel-ink">
             {GUEST_OF_HONOR}&apos;s
             <br />
-            {AGE_TURNING}th Birthday!
+            {ordinal(AGE_TURNING)} Birthday
           </h1>
         </section>
 
-        <PixelCard bg="peach" className="w-full">
+        <HudPanel bg="peach" className="w-full">
+          <p className="font-hud text-sm tracking-[0.2em] text-pixel-ink-soft mb-3">
+            MISSION BRIEFING
+          </p>
           <div className="flex flex-col gap-2 font-body text-sm sm:text-base">
             <p>
               <span className="font-pixel text-[10px] block mb-1 text-pixel-ink-soft">
@@ -74,15 +85,15 @@ export default function InviteContent({ onReplay }: { onReplay: () => void }) {
               {PARTY_LOCATION}
             </p>
           </div>
-        </PixelCard>
+        </HudPanel>
 
         <section className="w-full flex flex-col items-center gap-3">
-          <h2 className="font-pixel text-sm sm:text-base">Countdown to the Party</h2>
+          <h2 className="font-pixel text-sm sm:text-base">Next Level Starts In</h2>
           <CountdownTimer targetDate={PARTY_DATE_ISO} />
         </section>
 
         <section className="w-full flex flex-col items-center gap-3">
-          <h2 className="font-pixel text-sm sm:text-base">Photo Gallery</h2>
+          <h2 className="font-pixel text-sm sm:text-base">Collected Memories</h2>
           <PhotoGallery />
         </section>
 
@@ -93,7 +104,8 @@ export default function InviteContent({ onReplay }: { onReplay: () => void }) {
           }}
           className="font-body text-xs text-pixel-ink-soft underline cursor-pointer"
         >
-          🔁 replay game
+          <ReplayIcon size={14} />
+          Replay Level 1
         </button>
       </div>
     </main>

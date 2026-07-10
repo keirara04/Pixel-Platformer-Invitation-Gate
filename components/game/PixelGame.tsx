@@ -149,7 +149,7 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
   return (
     <div className="fixed inset-0 flex flex-col bg-pixel-ink overflow-hidden">
       <p className="font-pixel text-[10px] sm:text-xs text-pixel-bg text-center px-4 py-3">
-        Collect all the memory photos and reach the cake to unlock the invite!
+        Collect all the memory and reach the cake to unlock next checkpoint!
       </p>
       <canvas
         ref={canvasRef}
