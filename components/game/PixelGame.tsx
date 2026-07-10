@@ -30,6 +30,8 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
         height: 270,
         background: [255, 250, 245],
         global: false,
+        stretch: true,
+        letterbox: true,
       });
       kaplayInstance = k;
       k.setGravity(1600);
@@ -63,8 +65,8 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
             const photo = MEMORY_PHOTOS.find((p) => p.id === photoId)!;
             const [r, g, b] = BG_COLOR_HEX[photo.bg];
             k.add([
-              k.rect(14, 14),
-              k.pos(60 + i * 160, 210),
+              k.rect(14, 20),
+              k.pos(60 + i * 160, 214),
               k.area(),
               k.color(r, g, b),
               k.outline(2, k.rgb(...PIXEL_INK)),
@@ -73,13 +75,19 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
           });
 
           const exit = k.add([
-            k.rect(16, 24),
+            k.rect(16, 40),
             k.pos(level.exit.x, level.exit.y),
             k.area(),
             k.color(255, 243, 196),
             k.outline(2, k.rgb(...PIXEL_INK)),
             "exit",
             { active: false },
+          ]);
+
+          k.add([
+            k.text("🎂", { size: 16 }),
+            k.pos(level.exit.x, level.exit.y - 4),
+            k.anchor("topleft"),
           ]);
 
           k.onKeyDown("left", () => player.move(-200, 0));
@@ -127,17 +135,18 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
   }, [onWin]);
 
   return (
-    <div className="flex flex-col items-center gap-3 py-10">
-      <p className="font-pixel text-xs sm:text-sm text-pixel-ink text-center px-4">
+    <div className="fixed inset-0 flex flex-col bg-pixel-ink overflow-hidden">
+      <p className="font-pixel text-[10px] sm:text-xs text-pixel-bg text-center px-4 py-3">
         Collect all the memory photos and reach the cake to unlock the invite!
       </p>
       <canvas
         ref={canvasRef}
         width={480}
         height={270}
-        className="pixel-border-sm"
+        className="flex-1 w-full min-h-0"
+        style={{ imageRendering: "pixelated" }}
       />
-      <p className="font-body text-xs text-pixel-ink-soft">
+      <p className="font-body text-xs text-pixel-bg text-center py-3">
         Arrow keys / WASD to move · Space to jump
       </p>
     </div>
