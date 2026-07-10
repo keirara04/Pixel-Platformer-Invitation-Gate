@@ -4,6 +4,7 @@ import CountdownTimer from "@/components/CountdownTimer";
 import PhotoGallery from "@/components/PhotoGallery";
 import HudPanel from "@/components/HudPanel";
 import PixelSprite from "@/components/icons/PixelSprite";
+import CharacterSprite from "@/components/icons/CharacterSprite";
 import ReplayIcon from "@/components/icons/ReplayIcon";
 import { setGameCompleted } from "@/lib/gameProgress";
 
@@ -50,6 +51,7 @@ export default function InviteContent({ onReplay }: { onReplay: () => void }) {
               <PixelSprite kind={sprite.kind} color={sprite.color} size={28} />
             </span>
           ))}
+          <CharacterSprite size={72} />
           <p className="font-hud text-lg sm:text-xl tracking-[0.3em] text-pixel-accent">
             &gt;&gt; ACHIEVEMENT UNLOCKED
             <span className="animate-blink">_</span>

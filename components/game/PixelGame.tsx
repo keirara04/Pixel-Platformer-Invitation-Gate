@@ -41,6 +41,7 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
       MEMORY_PHOTOS.forEach((photo) => {
         k.loadSprite(`photo-${photo.id}`, photo.src);
       });
+      k.loadSprite("player", "/images/character.png");
 
       LEVELS.forEach((level, index) => {
         k.scene(`level${index}`, () => {
@@ -59,11 +60,10 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
           });
 
           const player = k.add([
-            k.rect(16, 16),
+            k.sprite("player", { width: 18, height: 30 }),
             k.pos(level.playerStart.x, level.playerStart.y),
             k.area(),
             k.body(),
-            k.color(...PIXEL_INK),
             "player",
           ]);
 
