@@ -19,6 +19,7 @@ All party details currently use placeholders. To personalize:
 - **Photos** — The `MEMORY_PHOTOS` array in [components/photos.ts](components/photos.ts) points at 6 files in `public/images/` (`photo-1.jpg` … `photo-6.jpg`). Swap those files for your own; they're gitignored so personal photos never get committed. See `public/images/README.md`.
 - **Background music** — drop a royalty-free chiptune/8-bit MP3 at `public/audio/theme.mp3`. See `public/audio/README.md`. Playback starts automatically as soon as the page loads (with a fallback to the first key/click if the browser blocks autoplay) via [components/BackgroundMusic.tsx](components/BackgroundMusic.tsx), and loops continuously through both the game and the invite. The speaker icon in the bottom-right corner mutes/unmutes it.
 - **Game gate** — the site requires visitors to complete the pixel platformer game before viewing the invitation. The game's collectibles are pulled from `components/photos.ts` (the same photo source as the gallery), so customizing the photos automatically updates the game collectibles.
+- **Level questions & love letter** — `components/game/questions.ts` has 2 placeholder relationship questions (shown between levels) and `components/game/LoveLetter.tsx` has a placeholder final message (shown after winning, before the invite). Replace the `answer`/`hint` values and the `LETTER_MESSAGE` constant with real ones — answer matching is case/whitespace-lenient, so it doesn't need to be exact.
 
 ## Theme
 

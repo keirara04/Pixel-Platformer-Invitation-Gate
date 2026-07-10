@@ -40,7 +40,7 @@ const SPRITES: Array<{
 
 export default function InviteContent({ onReplay }: { onReplay: () => void }) {
   return (
-    <main className="relative flex-1 overflow-hidden px-4 py-12 sm:py-16">
+    <main className="relative flex-1 px-4 py-12 sm:py-16">
       <div className="relative mx-auto flex max-w-xl flex-col items-center gap-10 text-center">
         <section className="relative w-full flex flex-col items-center gap-4 pt-2">
           {SPRITES.map((sprite, i) => (

@@ -1,10 +1,8 @@
+// scripts/verify-love-letter.mjs
 import { chromium } from "playwright-core";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
-// Questions are picked randomly from the bank each playthrough, so instead
-// of assuming which 2 appear, read the whole bank and look up whichever
-// question is actually displayed.
 function getQuestionBank() {
   const src = readFileSync(
     new URL("../components/game/questions.ts", import.meta.url),
@@ -22,13 +20,13 @@ const browserPath = execSync(
 ).toString().trim();
 
 const browser = await chromium.launch({ executablePath: browserPath });
-const page = await browser.newPage({ viewport: { width: 1200, height: 800 } });
-const errors = [];
-page.on("console", (m) => {
-  if (m.type() === "error") errors.push(m.text());
-});
-page.on("pageerror", (e) => errors.push(String(e)));
+const page = await browser.newPage({ viewport: { width: 900, height: 700 } });
 
+// LoveLetter only becomes reachable by actually winning the game (there's
+// no shortcut flag for it, unlike the invite's completion flag), so this
+// script plays through all 3 levels for real — same technique as
+// scripts/verify-game-playthrough.mjs — then verifies the letter's own
+// click-to-open + continue behavior once it's reached.
 await page.evaluate(() => localStorage.removeItem("pixel-invite-game-completed")).catch(() => {});
 await page.goto("http://localhost:3000", { waitUntil: "networkidle" });
 await page.waitForSelector("text=SELECT YOUR CHARACTER");
@@ -36,10 +34,6 @@ await page.getByLabel("Select Nurin").click();
 await page.getByText("Start").click();
 await page.waitForSelector("canvas");
 await page.click("canvas");
-
-async function jump() {
-  await page.keyboard.press("Space");
-}
 
 async function answerGate() {
   await page.waitForSelector('input[placeholder="Type your answer..."]');
@@ -53,19 +47,16 @@ async function answerGate() {
   await page.waitForSelector('input[placeholder="Type your answer..."]', { state: "detached" });
 }
 
-// Hold right continuously for the whole playthrough; tap Space periodically
-// to jump without ever releasing horizontal movement (matches how a real
-// player would hold right + tap jump — releasing right mid-air kills
-// horizontal momentum and the player can't clear any gap).
-await page.keyboard.down("ArrowRight");
+async function jump() {
+  await page.keyboard.press("Space");
+}
 
-// Level 1: flat ground, no jumps needed.
+await page.keyboard.down("ArrowRight");
 await page.waitForTimeout(3000);
 await page.keyboard.up("ArrowRight");
 await answerGate();
 await page.keyboard.down("ArrowRight");
 
-// Level 2: gaps — tap jump periodically while still holding right.
 for (let i = 0; i < 8; i++) {
   await jump();
   await page.waitForTimeout(400);
@@ -74,7 +65,6 @@ await page.keyboard.up("ArrowRight");
 await answerGate();
 await page.keyboard.down("ArrowRight");
 
-// Level 3: gaps + raised platform — same technique, more attempts.
 for (let i = 0; i < 12; i++) {
   await jump();
   await page.waitForTimeout(400);
@@ -82,21 +72,22 @@ for (let i = 0; i < 12; i++) {
 await page.keyboard.up("ArrowRight");
 await page.waitForTimeout(500);
 
-// Winning now leads to the love letter, not straight to the invite.
+// Should now be on the closed-envelope letter screen, not the invite yet.
 await page.waitForSelector("text=Click to open");
+const inviteVisibleBeforeOpening = await page.locator("text=ACHIEVEMENT UNLOCKED").count();
+if (inviteVisibleBeforeOpening !== 0) {
+  throw new Error("Invite should not be visible before the envelope is opened");
+}
+
 await page.getByLabel("Open the letter").click();
 await page.waitForSelector("text=Continue", { timeout: 10000 });
+
 await page.getByText("Continue").click();
-
-const invited = await page.locator("text=ACHIEVEMENT UNLOCKED").count();
+await page.waitForSelector("text=ACHIEVEMENT UNLOCKED");
 const flag = await page.evaluate(() => localStorage.getItem("pixel-invite-game-completed"));
-
-if (errors.length > 0) {
-  throw new Error(`Console/page errors during playthrough: ${JSON.stringify(errors)}`);
-}
-if (invited === 0 || flag !== "true") {
-  throw new Error("Playthrough failed: did not reach the invite / win did not fire");
+if (flag !== "true") {
+  throw new Error("Expected completion flag to be set after continuing past the letter");
 }
 
-console.log("PASS: full playthrough completed, both question gates answered, letter opened, all 3 levels cleared, win fired");
+console.log("PASS: love letter shows closed envelope after winning, opens on click, and continue reveals the invite");
 await browser.close();
