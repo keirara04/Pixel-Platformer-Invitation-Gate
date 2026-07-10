@@ -43,3 +43,7 @@ next-env.d.ts
 # AI tooling (Claude Code plugin config, generated specs/plans)
 /.claude/
 /docs/superpowers/
+
+# personal photos — kept locally only, never pushed
+/public/images/photo-*.jpg
+/public/images/photo-*.png

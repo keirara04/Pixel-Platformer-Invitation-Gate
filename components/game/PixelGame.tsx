@@ -36,6 +36,12 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
       kaplayInstance = k;
       k.setGravity(1600);
 
+      // Kaplay renders sprites once their async load resolves — safe to
+      // start the game immediately without awaiting these.
+      MEMORY_PHOTOS.forEach((photo) => {
+        k.loadSprite(`photo-${photo.id}`, photo.src);
+      });
+
       LEVELS.forEach((level, index) => {
         k.scene(`level${index}`, () => {
           let collected = 0;
@@ -64,12 +70,18 @@ export default function PixelGame({ onWin }: { onWin: () => void }) {
           level.photoIds.forEach((photoId, i) => {
             const photo = MEMORY_PHOTOS.find((p) => p.id === photoId)!;
             const [r, g, b] = BG_COLOR_HEX[photo.bg];
+            // Pastel backing square shows through while the sprite loads
+            // and behind any transparent areas of the source image.
             k.add([
               k.rect(14, 20),
               k.pos(60 + i * 160, 214),
-              k.area(),
               k.color(r, g, b),
               k.outline(2, k.rgb(...PIXEL_INK)),
+            ]);
+            k.add([
+              k.sprite(`photo-${photoId}`, { width: 14, height: 20 }),
+              k.pos(60 + i * 160, 214),
+              k.area(),
               "photo",
             ]);
           });

@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import InviteContent from "@/components/InviteContent";
+import BackgroundMusic from "@/components/BackgroundMusic";
 import { isGameCompleted, setGameCompleted } from "@/lib/gameProgress";
 
 const PixelGame = dynamic(() => import("@/components/game/PixelGame"), {
@@ -22,26 +23,23 @@ export default function Home() {
     setCompleted(isGameCompleted());
   }, []);
 
-  if (completed === null) {
-    return null;
-  }
-
-  if (!completed) {
-    return (
-      <PixelGame
-        onWin={() => {
-          setGameCompleted(true);
-          setCompleted(true);
-        }}
-      />
-    );
-  }
-
   return (
-    <InviteContent
-      onReplay={() => {
-        setCompleted(false);
-      }}
-    />
+    <>
+      <BackgroundMusic />
+      {completed === null ? null : !completed ? (
+        <PixelGame
+          onWin={() => {
+            setGameCompleted(true);
+            setCompleted(true);
+          }}
+        />
+      ) : (
+        <InviteContent
+          onReplay={() => {
+            setCompleted(false);
+          }}
+        />
+      )}
+    </>
   );
 }

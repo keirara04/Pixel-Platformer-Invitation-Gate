@@ -2,13 +2,12 @@
 
 import CountdownTimer from "@/components/CountdownTimer";
 import PhotoGallery from "@/components/PhotoGallery";
-import MusicToggle from "@/components/MusicToggle";
 import PixelCard from "@/components/PixelCard";
 import { setGameCompleted } from "@/lib/gameProgress";
 
 // Placeholder invite details — swap these for the real party info.
-const GUEST_OF_HONOR = "Alex";
-const AGE_TURNING = 10;
+const GUEST_OF_HONOR = "Nurin";
+const AGE_TURNING = 22;
 const PARTY_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 const PARTY_DATE_ISO = PARTY_DATE.toISOString();
 const PARTY_DATE_LABEL = PARTY_DATE.toLocaleDateString("en-US", {
@@ -17,7 +16,7 @@ const PARTY_DATE_LABEL = PARTY_DATE.toLocaleDateString("en-US", {
   day: "numeric",
   year: "numeric",
 });
-const PARTY_TIME_LABEL = "3:00 PM";
+const PARTY_TIME_LABEL = "11:00 AM";
 const PARTY_LOCATION = "123 Party Lane, Funtown";
 
 const SPRITES = [
@@ -97,8 +96,6 @@ export default function InviteContent({ onReplay }: { onReplay: () => void }) {
           🔁 replay game
         </button>
       </div>
-
-      <MusicToggle />
     </main>
   );
 }

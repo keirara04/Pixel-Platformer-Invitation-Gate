@@ -23,16 +23,13 @@ export default function PhotoGallery() {
           <button
             key={tile.id}
             onClick={() => setOpenId(tile.id)}
-            className={`pixel-border-sm ${tile.bg} aspect-square flex items-center justify-center text-3xl sm:text-4xl cursor-pointer hover:brightness-95`}
+            className={`pixel-border-sm ${tile.bg} aspect-square overflow-hidden cursor-pointer hover:brightness-95`}
             aria-label={`Open photo ${tile.id}`}
           >
-            {tile.emoji}
+            <img src={tile.src} alt={tile.alt} className="w-full h-full object-cover" />
           </button>
         ))}
       </div>
-
-      {/* Placeholder tiles above — swap in real photos by replacing the emoji
-          divs with <img> tags pointing to files in /public/images. */}
 
       {openTile && (
         <div
@@ -43,10 +40,10 @@ export default function PhotoGallery() {
           onClick={() => setOpenId(null)}
         >
           <div
-            className={`pixel-border ${openTile.bg} w-full max-w-sm aspect-square flex items-center justify-center text-8xl`}
+            className={`pixel-border ${openTile.bg} w-full max-w-sm aspect-square overflow-hidden`}
             onClick={(e) => e.stopPropagation()}
           >
-            {openTile.emoji}
+            <img src={openTile.src} alt={openTile.alt} className="w-full h-full object-cover" />
           </div>
           <button
             onClick={() => setOpenId(null)}
