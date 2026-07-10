@@ -1,19 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const PLACEHOLDER_TILES = [
-  { id: 1, bg: "bg-pixel-pink", emoji: "🎂" },
-  { id: 2, bg: "bg-pixel-mint", emoji: "🎈" },
-  { id: 3, bg: "bg-pixel-lavender", emoji: "🎁" },
-  { id: 4, bg: "bg-pixel-butter", emoji: "⭐" },
-  { id: 5, bg: "bg-pixel-peach", emoji: "🎉" },
-  { id: 6, bg: "bg-pixel-pink", emoji: "🧁" },
-];
+import { MEMORY_PHOTOS } from "@/components/photos";
 
 export default function PhotoGallery() {
   const [openId, setOpenId] = useState<number | null>(null);
-  const openTile = PLACEHOLDER_TILES.find((t) => t.id === openId);
+  const openTile = MEMORY_PHOTOS.find((t) => t.id === openId);
 
   useEffect(() => {
     if (openId === null) return;
@@ -27,7 +19,7 @@ export default function PhotoGallery() {
   return (
     <>
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        {PLACEHOLDER_TILES.map((tile) => (
+        {MEMORY_PHOTOS.map((tile) => (
           <button
             key={tile.id}
             onClick={() => setOpenId(tile.id)}
