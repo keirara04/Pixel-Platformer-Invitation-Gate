@@ -7,6 +7,9 @@ const browserPath = execSync(
 
 const browser = await chromium.launch({ executablePath: browserPath });
 const page = await browser.newPage({ viewport: { width: 480, height: 900 } });
+await page.addInitScript(() => {
+  localStorage.setItem("pixel-invite-game-completed", "true");
+});
 await page.goto("http://localhost:3000", { waitUntil: "networkidle" });
 
 const tiles = await page.locator('[aria-label^="Open photo"]').count();
