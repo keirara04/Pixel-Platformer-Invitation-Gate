@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CHARACTERS } from "@/components/characters";
+import { getCharacters } from "@/components/characters";
 import LockIcon from "@/components/icons/LockIcon";
 
 export default function CharacterSelect({
@@ -10,7 +10,8 @@ export default function CharacterSelect({
   onStart: (characterSrc: string) => void;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const selected = CHARACTERS.find((c) => c.id === selectedId);
+  const [characters] = useState(() => getCharacters());
+  const selected = characters.find((c) => c.id === selectedId);
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center gap-8 bg-pixel-ink px-4">
@@ -19,7 +20,7 @@ export default function CharacterSelect({
       </p>
 
       <div className="flex gap-4 sm:gap-6">
-        {CHARACTERS.map((c) => {
+        {characters.map((c) => {
           const isSelected = c.id === selectedId;
           return (
             <button

@@ -32,10 +32,39 @@ await page.getByText("Start").click();
 await page.waitForSelector("canvas");
 await page.click("canvas");
 
-// Walk through level 1 (flat ground, no jumps) to its exit.
+// Walk through level 1 (900px, flat ground, 1 ground hazard at x=700-716)
+// to its exit. Adaptive walker: holds right continuously and, on each
+// ~120ms tick while grounded, jumps if the hazard lies within a short
+// lookahead window — same technique as
+// scripts/verify-game-playthrough.mjs (blind fixed-cadence jumping proved
+// unreliable against real animation-frame jitter). See that script's
+// comments for the full rationale and components/game/levels.ts for the
+// source layout.
 await page.keyboard.down("ArrowRight");
-await page.waitForTimeout(3000);
+const DANGER = [[700, 716]];
+let reachedExit = false;
+for (let i = 0; i < 60; i++) {
+  const state = await page.evaluate(() => {
+    const k = window.__debugK;
+    const p = k.get("player")[0];
+    return { x: p.pos.x, grounded: p.isGrounded() };
+  });
+  if (state.grounded) {
+    const aheadX = state.x + 55;
+    if (DANGER.some(([s, e]) => aheadX >= s && state.x < e)) {
+      await page.keyboard.press("Space");
+    }
+  }
+  if (state.x > 900) {
+    reachedExit = true;
+    break;
+  }
+  await page.waitForTimeout(120);
+}
 await page.keyboard.up("ArrowRight");
+if (!reachedExit) {
+  throw new Error("Did not reach level 1's exit zone within 60 ticks");
+}
 
 // The question dialogue should now be visible with no hint yet.
 await page.waitForSelector('input[placeholder="Type your answer..."]');
