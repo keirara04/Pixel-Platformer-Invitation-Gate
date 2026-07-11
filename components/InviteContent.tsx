@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import CountdownTimer from "@/components/CountdownTimer";
 import PhotoGallery from "@/components/PhotoGallery";
 import HudPanel from "@/components/HudPanel";
@@ -7,6 +8,7 @@ import PixelSprite from "@/components/icons/PixelSprite";
 import CharacterSprite from "@/components/icons/CharacterSprite";
 import ReplayIcon from "@/components/icons/ReplayIcon";
 import { setGameCompleted } from "@/lib/gameProgress";
+import { totalStarsCollected } from "@/lib/gameStats";
 
 // Placeholder invite details — swap these for the real party info.
 const GUEST_OF_HONOR = "Nurin";
@@ -21,6 +23,7 @@ const PARTY_DATE_LABEL = PARTY_DATE.toLocaleDateString("en-US", {
 });
 const PARTY_TIME_LABEL = "11:00 AM";
 const PARTY_LOCATION = "MRT Bandar Tun Hussein Onn (SBK29) Station, Cheras, Kuala Lumpur, Malaysia";
+const TOTAL_BONUS_STARS = 7;
 
 function ordinal(n: number): string {
   const suffixes = ["th", "st", "nd", "rd"];
@@ -39,6 +42,12 @@ const SPRITES: Array<{
 ];
 
 export default function InviteContent({ onReplay }: { onReplay: () => void }) {
+  const [starsFound, setStarsFound] = useState(0);
+
+  useEffect(() => {
+    setStarsFound(totalStarsCollected());
+  }, []);
+
   return (
     <main className="relative flex-1 px-4 py-12 sm:py-16">
       <div className="relative mx-auto flex max-w-xl flex-col items-center gap-10 text-center">
@@ -97,6 +106,12 @@ export default function InviteContent({ onReplay }: { onReplay: () => void }) {
         <section className="w-full flex flex-col items-center gap-3">
           <h2 className="font-pixel text-sm sm:text-base">Collected Memories</h2>
           <PhotoGallery />
+        </section>
+
+        <section className="w-full flex flex-col items-center gap-2">
+          <p className="font-pixel text-[10px] sm:text-xs text-pixel-ink-soft">
+            ⭐ {starsFound}/{TOTAL_BONUS_STARS} stars found
+          </p>
         </section>
 
         <button
