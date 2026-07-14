@@ -6,7 +6,7 @@ import { playLevelComplete } from "@/components/game/sfx";
 // Placeholder — replace with your real message. This is the moment she's
 // been playing toward, so make it count.
 const LETTER_MESSAGE =
-  "PLACEHOLDER: write your real message here. This is the letter she opens after finishing the game — say whatever you want her to read in this moment.";
+  "Thanks for playing! I hope you enjoyed the game and the little surprises along the way. I wanted to make this special for you, and I hope it brought a smile to your face. Every time  I think about you, I feel so lucky to have you in my life. You make every day brighter and more fun. Also the questions changed a bit, so if you want to play again, you can see some new ones! I love you so much, and I can't wait to celebrate your birthday together. Happy Birthday, Nurin!";
 
 export default function LoveLetter({ onContinue }: { onContinue: () => void }) {
   const [opened, setOpened] = useState(false);

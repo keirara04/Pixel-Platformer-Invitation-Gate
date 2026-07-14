@@ -7,6 +7,8 @@ import InviteContent from "@/components/InviteContent";
 import BackgroundMusic from "@/components/BackgroundMusic";
 import CharacterSelect from "@/components/game/CharacterSelect";
 import LoveLetter from "@/components/game/LoveLetter";
+import PasswordGate from "@/components/PasswordGate";
+import WelcomeContent from "@/components/WelcomeContent";
 import { isGameCompleted, setGameCompleted } from "@/lib/gameProgress";
 
 const PixelGame = dynamic(() => import("@/components/game/PixelGame"), {
@@ -18,23 +20,29 @@ const PixelGame = dynamic(() => import("@/components/game/PixelGame"), {
   ),
 });
 
-type Stage = "select" | "playing" | "letter" | "invite";
+type Stage = "welcome" | "select" | "playing" | "letter" | "invite";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage | null>(null);
   const [characterSrc, setCharacterSrc] = useState<string | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
 
   useEffect(() => {
-    setStage(isGameCompleted() ? "invite" : "select");
+    setStage(isGameCompleted() ? "invite" : "welcome");
   }, []);
 
   if (stage === null) {
     return null;
   }
 
+  if (!unlocked) {
+    return <PasswordGate onUnlock={() => setUnlocked(true)} />;
+  }
+
   return (
     <>
       <BackgroundMusic />
+      {stage === "welcome" && <WelcomeContent onStart={() => setStage("select")} />}
       {stage === "select" && (
         <CharacterSelect
           onStart={(src) => {

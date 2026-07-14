@@ -54,9 +54,9 @@ export default function QuestionGate({
     setTimeout(() => setShaking(false), 350);
   }
 
-  // Kaplay's arrow-key/WASD/space listeners are bound on window underneath
-  // this overlay — stopping propagation here keeps typing from also moving
-  // or jumping the player.
+  // Prevents typing here from also triggering other document-level key
+  // handlers (kaplay itself listens on the canvas element directly, so
+  // this doesn't affect it, but other listeners may bubble via window).
   function stopGameKeys(e: KeyboardEvent<HTMLInputElement>) {
     e.stopPropagation();
   }

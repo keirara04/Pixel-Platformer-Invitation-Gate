@@ -152,6 +152,23 @@ export default function PixelGame({
   const [gateQuestions] = useState(() => pickGateQuestions());
 
   useEffect(() => {
+    // Kaplay binds its key listeners to the canvas element itself, so a
+    // keyup that fires elsewhere (e.g. the question gate's text input
+    // stealing focus while a movement key is held) never reaches it —
+    // the key is stuck "down" and the player keeps moving after the gate
+    // closes. Forwarding stray keyups to the canvas keeps its key state
+    // in sync regardless of what currently has focus. Registered on the
+    // capture phase so it still runs even though QuestionGate's input
+    // calls stopPropagation() on its own keyup (bubble-phase stopPropagation
+    // can't suppress a capture-phase listener above it).
+    function forwardStrayKeyUp(e: KeyboardEvent) {
+      if (e.target === canvasRef.current) return;
+      canvasRef.current?.dispatchEvent(
+        new KeyboardEvent("keyup", { key: e.key, code: e.code, bubbles: true })
+      );
+    }
+    window.addEventListener("keyup", forwardStrayKeyUp, true);
+
     let destroyed = false;
     let kaplayInstance: { quit: () => void } | null = null;
 
@@ -371,6 +388,7 @@ export default function PixelGame({
     return () => {
       destroyed = true;
       kaplayInstance?.quit();
+      window.removeEventListener("keyup", forwardStrayKeyUp, true);
     };
   }, [onWin, characterSrc]);
 
