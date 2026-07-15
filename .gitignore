@@ -44,9 +44,5 @@ next-env.d.ts
 /.claude/
 /docs/superpowers/
 
-# personal photos — kept locally only, never pushed
-/public/images/photo-*.jpg
-/public/images/photo-*.png
-
 # regenerable pixel-art render output (source of truth is assets-src/*.json + gen_*.py)
 /assets-src/output/

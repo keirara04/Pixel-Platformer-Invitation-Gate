@@ -20,6 +20,25 @@ The output PNG is consumed by:
 - `components/icons/CharacterSprite.tsx` (invite-page mascot)
 - `components/game/PixelGame.tsx` (in-game player sprite, loaded into Kaplay)
 
+## Unlockable characters (panda, cat)
+
+`gen_character_panda.py` and `gen_character_cat.py` build the two bonus
+characters on the same 24×40 canvas and body proportions as the main
+character, so they line up with the same collision box and jump pose.
+To regenerate after editing a script:
+
+```bash
+cd assets-src
+python3 gen_character_panda.py   # or gen_character_cat.py
+python3 ~/.claude/skills/pixel-art/validate.py character_panda.json
+python3 ~/.claude/skills/pixel-art/render.py character_panda.json ./output/character_panda
+cp output/character_panda/frame.png ../public/images/character-panda.png
+```
+
+Consumed by `components/characters.ts` (roster entries `panda` and `cat`,
+unlocked after collecting enough bonus stars — see `lib/gameStats.ts`) and
+loaded into Kaplay the same way as the main character once selected.
+
 ## Enemy, hazard, and star sprites
 
 `gen_enemy.py`, `gen_hazard.py`, and `gen_star.py` each build a small
